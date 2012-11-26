@@ -1,14 +1,4 @@
 #include <stdlib.h>
-
-int main(){
-	printf("hey");
-}
-/*
- * test.c
- *
- *  Created on: Nov 25, 2012
- *      Author: huy
- */
 #include <Utilities.h>
 #include <Connection.h>
 

@@ -4,7 +4,7 @@
  *  Created on: Nov 24, 2012
  *      Author: huy
  */
-
+#include "Connection.h"
 
 /*
  * connection handler as a thread for each connection

@@ -12,12 +12,12 @@
 #include <Utilities.h>
 
 
-typedef struct Connection{
+typedef struct {
 	struct Connection			*next; //next connection
 	struct User					*owner;//owner of this connection
 	struct Client				*client;//the client this connection resides on
 
-};
+} Connection;
 
 void *conn_handler (void *vargp);
 void echo(int connfd);
