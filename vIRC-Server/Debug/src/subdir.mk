@@ -10,7 +10,9 @@ C_SRCS += \
 ../src/Room.c \
 ../src/Server.c \
 ../src/User.c \
-../src/main.c 
+../src/Utilities.c \
+../src/main.c \
+../src/test.c 
 
 OBJS += \
 ./src/Client.o \
@@ -19,7 +21,9 @@ OBJS += \
 ./src/Room.o \
 ./src/Server.o \
 ./src/User.o \
-./src/main.o 
+./src/Utilities.o \
+./src/main.o \
+./src/test.o 
 
 C_DEPS += \
 ./src/Client.d \
@@ -28,7 +32,9 @@ C_DEPS += \
 ./src/Room.d \
 ./src/Server.d \
 ./src/User.d \
-./src/main.d 
+./src/Utilities.d \
+./src/main.d \
+./src/test.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

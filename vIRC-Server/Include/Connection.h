@@ -8,6 +8,10 @@
 #ifndef CONNECTION_H_
 #define CONNECTION_H_
 
+#include <stdlib.h>
+#include <Utilities.h>
+
+
 typedef struct Connection{
 	struct Connection			*next; //next connection
 	struct User					*owner;//owner of this connection
@@ -15,5 +19,7 @@ typedef struct Connection{
 
 };
 
+void *conn_handler (void *vargp);
+void echo(int connfd);
 
 #endif /* CONNECTION_H_ */
