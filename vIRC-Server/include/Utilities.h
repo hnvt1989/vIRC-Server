@@ -21,6 +21,7 @@
 #include <semaphore.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdbool.h>
 /**
 
 #include <setjmp.h>
@@ -114,5 +115,17 @@ ssize_t Write(int fd, const void *buf, size_t count);
 off_t Lseek(int fildes, off_t offset, int whence);
 void Close(int fd);
 
+/* Standard I/O wrappers */
+void Fclose(FILE *fp);
+FILE *Fdopen(int fd, const char *type);
+char *Fgets(char *ptr, int n, FILE *stream);
+FILE *Fopen(const char *filename, const char *mode);
+void Fputs(const char *ptr, FILE *stream);
+size_t Fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+void Fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
 
 #endif /* NET_HELPER_H_ */
+
+
+/* Logging */
+void log(char * s);

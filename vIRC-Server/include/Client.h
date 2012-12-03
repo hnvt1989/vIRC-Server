@@ -11,22 +11,22 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
-typedef struct{
+struct Client{
 	struct Connection			*connection; //point to the head of the connections that this client established
 	struct User					*users;		//point to the head of users that resides on this client
 	struct client_info			*info;
 
-} Client;
+};
 
-typedef struct {
+struct Client_info{
 	struct platform_info		*platform;
 	char*						ip_addr;//char* for now
 	char*						location; //char* for now
-} client_info;
+};
 
-typedef struct{
+struct platform_info{
 	char*						comp_name;
 	char*						owner;
 	char*						description;
-} platform_info;
+} ;
 #endif /* CLIENT_H_ */

@@ -20,6 +20,6 @@ typedef struct {
 } Connection;
 
 void *conn_handler (void *vargp);
-void echo(int connfd);
+void echo(int connfd, unsigned int thread_id);
 
 #endif /* CONNECTION_H_ */

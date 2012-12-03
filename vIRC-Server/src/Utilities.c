@@ -12,43 +12,7 @@
  ********************************/
 #include "Utilities.h"
 
-
-
-/*
- * Client: open_clientfd - open connection to server at <hostname, port>
- *   and return a socket descriptor ready for reading and writing.
- *   Returns -1 and sets errno on Unix error.
- *   Returns -2 and sets h_errno on DNS (gethostbyname) error.
- */
-int open_clientfd(char *hostname, int port)
-{
-    int clientfd;
-    struct hostent *hp;
-    struct sockaddr_in serveraddr;
-
-    if ((clientfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-	return -1; /* check errno for cause of error */
-
-    /* Fill in the server's IP address and port */
-    if ((hp = gethostbyname(hostname)) == NULL)
-    	return -2; /* check h_errno for cause of error */
-    bzero((char *) &serveraddr, sizeof(serveraddr));
-    serveraddr.sin_family = AF_INET;
-
-    //copy first address in the address list to serveraddr
-    bcopy((char *)hp->h_addr_list[0], (char *)&serveraddr.sin_addr.s_addr, hp->h_length);
-
-    //convert to network byte order (htons, 16bit int)
-    serveraddr.sin_port = htons(port);
-
-    /* Establish a connection with the server */
-    if (connect(clientfd, (SA *) &serveraddr, sizeof(serveraddr)) < 0)
-    	return -1;
-    return clientfd;
-}
-
-
-
+static bool log_console_enabled = true;
 
 /*
  * Server : open_listenfd - open and return a listening socket on port
@@ -56,12 +20,13 @@ int open_clientfd(char *hostname, int port)
  */
 int open_listenfd(int port)
 {
+
     int listenfd, optval=1;
     struct sockaddr_in serveraddr;
 
     /* Create a socket descriptor */
     if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-	return -1;
+    	return -1;
 
     /* Eliminates "Address already in use" error from bind. */
     /* make server terminated and restarted immediately. */
@@ -76,12 +41,17 @@ int open_listenfd(int port)
     /* accept request to any of the IP addresses for this host by using INADDR_ANY wildcard */
     serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
     serveraddr.sin_port = htons((unsigned short)port);
+
     if (bind(listenfd, (SA *)&serveraddr, sizeof(serveraddr)) < 0)
     	return -1;
 
     /* Make it a listening socket ready to accept connection requests */
     if (listen(listenfd, LISTENQ) < 0)
     	return -1;
+
+    printf("LOG*** Listen port    = %d \n", port);
+    printf("LOG*** Listen socket  = %d \n", listenfd);
+
     return listenfd;
 }
 
@@ -89,18 +59,6 @@ int open_listenfd(int port)
 /******************************************
  * Wrappers for the client/server helper routines
  ******************************************/
-int Open_clientfd(char *hostname, int port)
-{
-    int rc;
-
-    if ((rc = open_clientfd(hostname, port)) < 0) {
-	if (rc == -1)
-	    unix_error("Open_clientfd Unix error");
-	else
-	    dns_error("Open_clientfd DNS error");
-    }
-    return rc;
-}
 
 int Open_listenfd(int port)
 {
@@ -158,13 +116,6 @@ int Accept(int s, struct sockaddr *addr, socklen_t *addrlen)
     return rc;
 }
 
-void Connect(int sockfd, struct sockaddr *serv_addr, int addrlen)
-{
-    int rc;
-
-    if ((rc = connect(sockfd, serv_addr, addrlen)) < 0)
-    	unix_error("Connect error");
-}
 
 /************************
  * DNS interface wrappers
@@ -562,4 +513,77 @@ void Close(int fd)
 	unix_error("Close error");
 }
 
+
+
+/******************************************
+ * Wrappers for the Standard I/O functions.
+ ******************************************/
+void Fclose(FILE *fp)
+{
+    if (fclose(fp) != 0)
+	unix_error("Fclose error");
+}
+
+FILE *Fdopen(int fd, const char *type)
+{
+    FILE *fp;
+
+    if ((fp = fdopen(fd, type)) == NULL)
+	unix_error("Fdopen error");
+
+    return fp;
+}
+
+char *Fgets(char *ptr, int n, FILE *stream)
+{
+    char *rptr;
+
+    if (((rptr = fgets(ptr, n, stream)) == NULL) && ferror(stream))
+	app_error("Fgets error");
+
+    return rptr;
+}
+
+FILE *Fopen(const char *filename, const char *mode)
+{
+    FILE *fp;
+
+    if ((fp = fopen(filename, mode)) == NULL)
+	unix_error("Fopen error");
+
+    return fp;
+}
+
+void Fputs(const char *ptr, FILE *stream)
+{
+    if (fputs(ptr, stream) == EOF)
+	unix_error("Fputs error");
+}
+
+size_t Fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
+{
+    size_t n;
+
+    if (((n = fread(ptr, size, nmemb, stream)) < nmemb) && ferror(stream))
+	unix_error("Fread error");
+    return n;
+}
+
+void Fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)
+{
+    if (fwrite(ptr, size, nmemb, stream) < nmemb)
+	unix_error("Fwrite error");
+}
+
+
+/******************************************
+ * Logging
+ ******************************************/
+
+// Log to console
+void log(char * s)
+{
+	if (log_console_enabled)
+			printf("LOG****** % s \n", s);
+}
 
