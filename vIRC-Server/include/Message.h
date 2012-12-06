@@ -10,17 +10,6 @@
 
 #include <time.h>
 
-//communication mesage between server and client
-//message encapsulation by checking a byte at a time
-//message := <prefix> <command> <content>
-//delimiter (between components)        =    |
-struct message
-{
-	struct prefix			prefix;
-	struct command			command;
-	struct content			content;
-
-};
 
 
 /*
@@ -61,10 +50,10 @@ typedef enum
  */
 struct command
 {
+#define PARAM_MAX	25
 	send_code				code;
-
 	int						param_length;
-	char*					param[]; //param of this command
+	char*					param[PARAM_MAX]; //param of this command
 };
 
 
@@ -72,14 +61,14 @@ struct command
  * 						CONTENT OF THE MESSAGE
  ***********************************************************************/
 typedef enum {
-	RED,
+	RED = 0,
 	BLACK,
 
 }	color;
 
 typedef enum
 {
-	BOLD,
+	BOLD = 0,
 	ITALIC,
 	BOLD_ITALIC,
 	REGULAR
@@ -112,7 +101,7 @@ typedef enum
 	/********** ERRORS ************
 	 ******************************/
 
-	INVALID_USER, 				//invalid user account , failure on verification
+	INVALID_USER = 0, 				//invalid user account , failure on verification
 	INVALID_CHAN_NAME,			//invalid channel name , failure on creating channel
 
 	CHANNEL_FULL, 				//channel is full
@@ -145,5 +134,15 @@ struct reply
 
 
 
+//communication mesage between server and client
+//message encapsulation by checking a byte at a time
+//message := <prefix> <command> <content>
+//delimiter (between components)        =    |
+struct message
+{
+	struct prefix			prefix;
+	struct command			command;
+	struct content			content;
 
+};
 #endif /* MESSAGE_H_ */
