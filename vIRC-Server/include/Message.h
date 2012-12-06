@@ -8,6 +8,7 @@
 #ifndef MESSAGE_H_
 #define MESSAGE_H_
 
+#include <time.h>
 
 //communication mesage between server and client
 //message encapsulation by checking a byte at a time
@@ -83,7 +84,7 @@ struct content
 	int						cnt;	//number of content's components
 };
 
-typedef enum{
+typedef enum {
 	RED,
 	BLACK,
 
