@@ -38,20 +38,6 @@ struct prefix
 
 
 
-/*
- * command := <send_code> <param_length> <param>
- * delimiter 							=    ~
- * delimiter (between param)			=   :
- */
-struct command
-{
-	send_code				code;
-
-	int						param_length;
-	char*					param[]; //param of this command
-};
-
-
 typedef enum
 {
 	CREATE_USER_ACC,
@@ -68,6 +54,38 @@ typedef enum
 
 }	send_code;
 
+/*
+ * command := <send_code> <param_length> <param>
+ * delimiter 							=    ~
+ * delimiter (between param)			=   :
+ */
+struct command
+{
+	send_code				code;
+
+	int						param_length;
+	char*					param[]; //param of this command
+};
+
+
+/***********************************************************************
+ * 						CONTENT OF THE MESSAGE
+ ***********************************************************************/
+typedef enum {
+	RED,
+	BLACK,
+
+}	color;
+
+typedef enum
+{
+	BOLD,
+	ITALIC,
+	BOLD_ITALIC,
+	REGULAR
+}	style;
+
+
 
 /*
  * The text based content of the message
@@ -83,21 +101,6 @@ struct content
 
 	int						cnt;	//number of content's components
 };
-
-typedef enum {
-	RED,
-	BLACK,
-
-}	color;
-
-typedef enum
-{
-	BOLD,
-	ITALIC,
-	BOLD_ITALIC,
-	REGULAR
-}	style;
-
 
 
 
@@ -139,12 +142,6 @@ struct reply
 	send_code				prev_scode;
 	time_t					tprev_code;
 };
-
-
-
-
-
-
 
 
 
