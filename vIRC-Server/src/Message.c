@@ -10,6 +10,7 @@
 
 /********* structure construction *******/
 struct message*	create_msg(char*  stream){
+	int a;
 	return NULL;
 }
 struct prefix*	create_prefix(char* stream){

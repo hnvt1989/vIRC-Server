@@ -149,6 +149,7 @@ struct message
 
 };
 
+
 struct message*	create_msg(char*  stream);
 struct prefix*	create_prefix(char* stream);
 struct content* create_content(char* stream);
