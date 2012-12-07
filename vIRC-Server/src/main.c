@@ -6,9 +6,16 @@
 #include <stdlib.h>
 #include <Utilities.h>
 #include <Connection.h>
+#include <stdbool.h>
+#include "test/All_UTests.c"
 
 int main(int argc, char **argv)
 {
+	//test
+	bool runTest = true;
+	if(runTest)
+		RunAllTests();
+
     int listenfd, *connfdp, port;
     socklen_t clientlen = sizeof(struct sockaddr_in);
     socklen_t serverlen = sizeof(struct sockaddr_in);

@@ -9,7 +9,10 @@
 #define MESSAGE_H_
 
 #include <time.h>
-
+#include <stdbool.h>
+#include <string.h>
+#include <assert.h>
+#include <stdio.h>
 
 
 /*
@@ -145,4 +148,16 @@ struct message
 	struct content			content;
 
 };
+
+struct message*	create_msg(char*  stream);
+struct prefix*	create_prefix(char* stream);
+struct content* create_content(char* stream);
+
+bool is_valid_msg(struct message*);
+bool is_valid_prefix(struct prefix*);
+bool is_valid_content(struct content*);
+
+/*string helper functions */
+char** str_split(char* a_str, const char a_delim);
+
 #endif /* MESSAGE_H_ */
