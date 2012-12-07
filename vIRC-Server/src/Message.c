@@ -32,7 +32,7 @@ bool is_valid_content(struct content* cont){
 	return false;
 }
 
-/*************** string helper ****************
+/*************** string utlities ****************
  **********************************************/
 /*
  * return char pointer to array of pointers of tokens
