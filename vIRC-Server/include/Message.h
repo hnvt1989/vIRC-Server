@@ -160,5 +160,9 @@ bool is_valid_content(struct content*);
 
 /*string helper functions */
 char** str_split(char* a_str, const char a_delim);
+char *ltrim(char *s);
+char *rtrim(char *s);
+char *trim(char *s);
+
 
 #endif /* MESSAGE_H_ */

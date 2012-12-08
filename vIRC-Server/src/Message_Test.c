@@ -33,7 +33,6 @@
         for(idx = 0; *(output + idx) != NULL; idx++){
         	actual = strcat(actual,*(output + idx));
         }
-
         char* expected = "Server 1 ~ Channel A ~ huy2 ~ 242423  ROOM_MSG  ~ 1 ~ All  RED ~ BOLD ~ Wassup room";
         //printf("actual = %s \n", actual);
 
@@ -73,7 +72,7 @@
         }
 
         char* expected = "CREATE_USER_ACC   2  huy2 : pwd1234";
-        printf("actual = %s \n", actual);
+        //printf("actual = %s \n", actual);
 
         CuAssertStrEquals(tc, expected, actual);
 
@@ -92,17 +91,33 @@
         }
 
         char* expected = "huy2  pwd1234";
-        printf("actual = %s \n", actual);
+        //printf("actual = %s \n", actual);
 
         CuAssertStrEquals(tc, expected, actual);
 
     }
 
+    //input:   [  huy2  age4 ]
+    //expect:  [huy2age4]
+   void TestTrim(CuTest *tc){
+	   char* input = strdup("   huy2  age4  ");
+	   char* actual = trim(input);
+	   char* expected =  "huy2  age4";
+
+	   //printf("actual = %s \n", actual);
+	   CuAssertStrEquals(tc, expected, actual);
+   }
+
+
     CuSuite* StrUtilGetSuite() {
         CuSuite* suite = CuSuiteNew();
+
         SUITE_ADD_TEST(suite, TestStrSplit_Case1);
         SUITE_ADD_TEST(suite, TestStrSplit_Case2);
         SUITE_ADD_TEST(suite, TestStrSplit_Case3);
         SUITE_ADD_TEST(suite, TestStrSplit_Case4);
+
+        SUITE_ADD_TEST(suite, TestTrim);
+
         return suite;
     }

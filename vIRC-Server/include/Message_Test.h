@@ -17,6 +17,8 @@ void TestStrSplit_Case2(CuTest *tc);
 void TestStrSplit_Case3(CuTest *tc);
 void TestStrSplit_Case4(CuTest *tc);
 
+void TestTrim(CuTest *tc);
+
 CuSuite* StrUtilGetSuite();
 
 #endif /* MESSAGE_TEST_H_ */

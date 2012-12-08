@@ -34,9 +34,9 @@ bool is_valid_content(struct content* cont){
 
 /*************** string utlities ****************
  **********************************************/
-/*
- * return char pointer to array of pointers of tokens
- */
+
+
+//split the string, return char* to array of ptr to literal string
 char** str_split(char* a_str, const char a_delim)
 {
     char** result    = 0;
@@ -80,4 +80,40 @@ char** str_split(char* a_str, const char a_delim)
     }
 
     return result;
+}
+
+
+//trim left
+char *ltrim(char *s)
+{
+	if (!s)
+		return NULL;   // handle NULL string
+	if (!*s)
+		return s;      // handle empty string
+    while(isspace(*s)) s++;
+    return s;
+}
+
+//trim right
+char *rtrim(char *s)
+{
+	if (!s)
+		return NULL;   // handle NULL string
+	if (!*s)
+		return s;      // handle empty string
+
+    char* back = s + strlen(s);
+    while(isspace(*--back));
+    *(back+1) = '\0';
+    return s;
+}
+
+//trim left and right
+char *trim(char *s)
+{
+	if (!s)
+		return NULL;   // handle NULL string
+	if (!*s)
+		return s;      // handle empty string
+    return rtrim(ltrim(s));
 }
