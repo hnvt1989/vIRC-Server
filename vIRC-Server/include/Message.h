@@ -56,7 +56,7 @@ struct command
 #define PARAM_MAX	25
 	send_code				code;
 	int						param_length;
-	char*					param[PARAM_MAX]; //param of this command
+	char**					param[PARAM_MAX]; //param of this command
 };
 
 
@@ -150,9 +150,10 @@ struct message
 };
 
 
-struct message*	create_msg(char*  stream);
-struct prefix*	create_prefix(char* stream);
-struct content* create_content(char* stream);
+struct message*	create_msg(const char* str);
+struct prefix*	create_prefix(const char* str);
+struct command*	create_command(const char* str);
+struct content* create_content(const char* str);
 
 bool is_valid_msg(struct message*);
 bool is_valid_prefix(struct prefix*);

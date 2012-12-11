@@ -9,14 +9,82 @@
 #include "Message.h"
 
 /********* structure construction *******/
-struct message*	create_msg(char*  stream){
-	int a;
+struct message*	create_msg(const char* str){
+	char* string = strdup(str);
+	string = trim(string);
+
+
 	return NULL;
 }
-struct prefix*	create_prefix(char* stream){
-	return NULL;
+
+
+struct prefix*	create_prefix(const char* str){
+	char* string = strdup(str);
+	string = trim(string);
+	struct prefix* pre = (struct prefix*) malloc(sizeof(struct prefix));
+
+	char** output = str_split(string, '~');
+
+    char* server_name = *(output + 0);
+    server_name = trim(server_name);
+
+    char* channel = *(output + 1);
+    channel = trim(channel);
+
+    char* user = *(output + 2);
+    user = trim(user);
+
+    //time is auto generated at server end
+
+    time_t time_received;
+    time_received = time (NULL);
+
+    //check server_name, channel and user (?)
+    pre->server_name = server_name;
+    pre->channel = channel;
+    pre->user = user;
+    pre->received = time_received;
+
+	return pre;
 }
-struct content* create_content(char* stream){
+
+/*
+ * command := <send_code> <param_length> <param>
+ * delimiter 							=    ~
+ * delimiter (between param)			=   :
+ */
+struct command*	create_command(const char* str){
+	char* string = strdup(str);
+	string = trim(string);
+	struct command* cmd = (struct command*) malloc(sizeof(struct command));
+
+	char** output = str_split(string, '~');
+
+     char* sd_str = *(output + 0);
+     send_code sd = (send_code)(atoi(trim(sd_str)));
+
+    char* param_ln_str = *(output + 1);
+    int param_ln = atoi(trim(param_ln_str));
+
+    char* pl_str = *(output + 2);
+    pl_str = trim(pl_str);
+    char** pl [PARAM_MAX] ;
+    char** pl_tmp =	str_split(pl_str, ':');
+
+    int i;
+    for(i = 0; i < param_ln ; i++){
+    	*(pl + i) = *(pl_tmp + i);
+    }
+
+    cmd->code = sd;
+    cmd->param_length = param_ln;
+    cmd->param = *pl;
+
+	return cmd;
+}
+struct content* create_content(const char* str){
+	char* string = strdup(str);
+	string = trim(string);
 	return NULL;
 }
 
