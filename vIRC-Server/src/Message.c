@@ -57,28 +57,37 @@ struct command*	create_command(const char* str){
 	char* string = strdup(str);
 	string = trim(string);
 	struct command* cmd = (struct command*) malloc(sizeof(struct command));
-
 	char** output = str_split(string, '~');
 
-     char* sd_str = *(output + 0);
-     send_code sd = (send_code)(atoi(trim(sd_str)));
-
+    char* sd_str = *(output + 0);
+    send_code sd = (send_code)(atoi(trim(sd_str)));
     char* param_ln_str = *(output + 1);
     int param_ln = atoi(trim(param_ln_str));
 
     char* pl_str = *(output + 2);
     pl_str = trim(pl_str);
-    char** pl [PARAM_MAX] ;
+
+    char** pl   = (char**)malloc(sizeof(char* ) * param_ln);
+    if(!pl){
+    	printf("Error: malloc %s\n", strerror(errno));
+    	return NULL;
+    }
     char** pl_tmp =	str_split(pl_str, ':');
 
     int i;
     for(i = 0; i < param_ln ; i++){
-    	*(pl + i) = *(pl_tmp + i);
+    	*(pl + i) = trim(*(pl_tmp + i));
     }
 
     cmd->code = sd;
     cmd->param_length = param_ln;
-    cmd->param = *pl;
+
+    cmd->param = (char**)malloc(sizeof(char*) * param_ln);
+    if (!(cmd->param)){
+    	printf("Error: malloc %s\n", strerror(errno));
+    	return NULL;
+    }
+    cmd->param = pl;
 
 	return cmd;
 }

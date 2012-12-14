@@ -13,7 +13,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
-
+#include <errno.h>
 
 /*
  * prefix := <server name>  <channel>  <user> <time received>
@@ -56,7 +56,7 @@ struct command
 #define PARAM_MAX	25
 	send_code				code;
 	int						param_length;
-	char**					param[PARAM_MAX]; //param of this command
+	char**					param; //param of this command Note: use pointer to pointer instead of pointer array (char* param[]) to save statically allocated memory
 };
 
 

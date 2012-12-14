@@ -162,17 +162,20 @@
     void TestCmdConstr_Case1(CuTest *tc){
     	char* input = strdup(" ROOM_MSG  ~ 2 ~ All : Hey ");
     	struct command* cmd = create_command(input);
-
+    	if (!cmd){
+        	printf("Error > TestCmdConstr_Case1 : create_command failed\n");
+        	return;
+    	}
     	send_code exp_sc = LOG_IN;
     	int exp_param_ln = 2;
-    	char** exp_param_list = { "All", "Hey"};
+    	char* exp_param_list[2] = { "All", "Hey"};
 
-    	CuAssertStrEquals(tc, exp_param_list[0], cmd->param[0]);
-    	CuAssertStrEquals(tc, exp_param_list[1], cmd->param[1]);
+    	CuAssertStrEquals(tc, exp_param_list[0], *(cmd->param));
+    	CuAssertStrEquals(tc, exp_param_list[1], *(cmd->param + 1));
 
     	CuAssertIntEquals(tc,exp_param_ln,cmd->param_length);
 
-    	CuAssertIntEquals(tc,(int)exp_sc,(int)(cmd->code));
+    	CuAssertIntEquals(tc,(int)exp_sc,(int)(cmd->code)); //failed here
     }
     void TestContentConstr_Case1(CuTest *tc){
 
