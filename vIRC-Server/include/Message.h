@@ -14,6 +14,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <errno.h>
+#include <uthash.h>
 
 /*
  * prefix := <server name>  <channel>  <user> <time received>
@@ -29,22 +30,19 @@ struct prefix
 
 
 
+#define MAX_SC_LENGTH 20
+/*** Hash struct to build hash table for send_code in a message string ***/
+typedef struct sc_struct {
+    char key[MAX_SC_LENGTH];            /* key */
+    int value;                      	/* value */
+    UT_hash_handle hh;                  /* makes this structure hashable */
+} send_code;
 
-typedef enum
-{
-	CREATE_USER_ACC,
-	LOG_IN,
-	LOG_OUT,
-
-	JOIN_ROOM,
-	QUIT_ROOM,
-
-	ROOM_MSG,
-	ROOM_PRIVATE_CHAT,
-
-	PRIVATE_CHAT
-
-}	send_code;
+/** send_code table, sc_head is the head of the list **/
+struct sc_struct *send_codes = NULL;
+void add_sc(struct sc_struct *s);
+void build_sc_tabl();
+struct sc_struct *find_sc(char* id);
 
 /*
  * command := <send_code> <param_length> <param>
@@ -54,7 +52,7 @@ typedef enum
 struct command
 {
 #define PARAM_MAX	25
-	send_code				code;
+	int				code;
 	int						param_length;
 	char**					param; //param of this command Note: use pointer to pointer instead of pointer array (char* param[]) to save statically allocated memory
 };

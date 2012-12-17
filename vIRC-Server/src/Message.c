@@ -10,11 +10,7 @@
 
 /********* structure construction *******/
 struct message*	create_msg(const char* str){
-	char* string = strdup(str);
-	string = trim(string);
 
-
-	return NULL;
 }
 
 
@@ -59,11 +55,16 @@ struct command*	create_command(const char* str){
 	struct command* cmd = (struct command*) malloc(sizeof(struct command));
 	char** output = str_split(string, '~');
 
+	//getting the send_code entry from send_code tables
     char* sd_str = *(output + 0);
-    send_code sd = (send_code)(atoi(trim(sd_str)));
+    struct sc_struct *sc_entry = find_sc(trim(sd_str));
+    int sd =  sc_entry->value;
+
+    //getting param length
     char* param_ln_str = *(output + 1);
     int param_ln = atoi(trim(param_ln_str));
 
+    //geting param string
     char* pl_str = *(output + 2);
     pl_str = trim(pl_str);
 
@@ -79,9 +80,9 @@ struct command*	create_command(const char* str){
     	*(pl + i) = trim(*(pl_tmp + i));
     }
 
+    //assigning value for the returning command struct
     cmd->code = sd;
     cmd->param_length = param_ln;
-
     cmd->param = (char**)malloc(sizeof(char*) * param_ln);
     if (!(cmd->param)){
     	printf("Error: malloc %s\n", strerror(errno));
@@ -108,6 +109,40 @@ bool is_valid_prefix(struct prefix* pre)
 bool is_valid_content(struct content* cont){
 	return false;
 }
+
+/*********** enum table utility *************/
+void add_sc(struct sc_struct *s){
+    HASH_ADD_STR( send_codes, key, s );
+}
+
+struct sc_struct *find_sc(char* id) {
+    struct sc_struct *s;
+
+    HASH_FIND_STR(send_codes , id, s );
+    return s;
+}
+
+/** for security reason, the value of the send_code table are hard coded **/
+void build_sc_tabl()
+{
+	struct sc_struct *tmp;
+	if (!strcpy(tmp->value, "CREATE_USER_ACC")){
+		printf("Error in build_sc_tabl \n");
+		return;
+	}
+	tmp->value = 0;
+	add_sc(tmp);
+
+	if (!strcpy(tmp->value, "LOG_IN")){
+		printf("Error in build_sc_tabl \n");
+		return;
+	}
+	tmp->value = 1;
+	add_sc(tmp);
+}
+
+
+
 
 /*************** string utlities ****************
  **********************************************/
