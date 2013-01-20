@@ -39,7 +39,7 @@ typedef struct sc_struct {
 } send_code;
 
 /** send_code table, sc_head is the head of the list **/
-struct sc_struct *send_codes = NULL;
+send_code *send_codes;
 void add_sc(struct sc_struct *s);
 void build_sc_tabl();
 struct sc_struct *find_sc(char* id);
