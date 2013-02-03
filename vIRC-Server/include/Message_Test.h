@@ -11,6 +11,7 @@
 #include <string.h>
 #include <Message.h>
 
+
 /* String Util test suite */
 void TestStrSplit_Case1(CuTest *tc);
 void TestStrSplit_Case2(CuTest *tc);

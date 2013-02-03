@@ -7,6 +7,7 @@
 
 #include "Message_Test.h"
 #include <stdlib.h>
+
 /*
  * message := <prefix> <command> <content>
  * delimiter (between components)        =    |
